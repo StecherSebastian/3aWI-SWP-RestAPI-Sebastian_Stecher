@@ -2,26 +2,17 @@
 
 [ApiController]
 [Route("api/[controller]")]
-public class AddOneToInputController : ControllerBase
+public class PutController : ControllerBase
 {
     [HttpPut("{input}")]
     public int InputPlusOne(int input)
     {
         return input + 1;
     }
-}
 
-[ApiController]
-[Route("api/[controller]")]
-public class SumOfInputsController : ControllerBase
-{
     [HttpPut("SumOfInputs")]
     public ActionResult<int> SumInputs([FromBody] SumRequest request)
     {
-        if (request == null)
-        {
-            return BadRequest("Invalid request body");
-        }
         return Ok(request.Input1 + request.Input2);
     }
 }
