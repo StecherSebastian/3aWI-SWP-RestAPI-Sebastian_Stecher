@@ -2,7 +2,7 @@
 
 async function getDataEndpoint1() {
     const input = document.getElementById("endpoint1_input").value
-    Console.log(`Input ${input}`)
+    console.log(`Input ${input}`)
     const url = `http://localhost:5116/api/Put/${input}`;
     const request = { method: 'PUT' }
     try {
