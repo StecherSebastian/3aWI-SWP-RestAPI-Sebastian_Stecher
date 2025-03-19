@@ -1,4 +1,5 @@
-﻿namespace ProgrammUE_02
+﻿using System.Text.Json.Serialization;
+namespace SchoolNamespace
 {
     public class Student : Person
     {
@@ -8,7 +9,9 @@
             Class3bWI = 1
         }
         private Schoolclasses _Schoolclass;
-        public Schoolclasses Schoolclass { get { return _Schoolclass; } }
+        public Schoolclasses Schoolclass { get { return _Schoolclass; } private set { _Schoolclass = value; } }
+        public Student() : base() { }
+        [JsonConstructor]
         public Student(Schoolclasses schoolclass, AllowedGenders gender, DateTime birthdate) : base(birthdate, gender)
         {
             _Schoolclass = schoolclass;

@@ -1,4 +1,4 @@
-﻿namespace ProgrammUE_02
+﻿namespace SchoolNamespace
 {
     internal class Programm
     {

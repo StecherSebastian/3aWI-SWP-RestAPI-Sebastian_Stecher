@@ -1,9 +1,10 @@
-﻿namespace ProgrammUE_02
+﻿namespace SchoolNamespace
 {
     public class Room
     {
         private int _Size;
         public int Size { get { return _Size; } }
+        public Room() {}
         public Room(int size) { _Size = size; }
     }
 }

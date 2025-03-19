@@ -1,12 +1,12 @@
-using ProgrammUE_02;
-using static ProgrammUE_02.Person;
-using static ProgrammUE_02.Student;
+using SchoolNamespace;
+using static SchoolNamespace.Person;
+using static SchoolNamespace.Student;
 
 namespace SchoolUnitTests
 {
     public class Tests
     {
-        private School _School;
+        private SchoolNamespace.School _School;
         private Student _Student;
         private Student _Student2;
         private Student _Student3;
@@ -15,7 +15,7 @@ namespace SchoolUnitTests
         [SetUp]
         public void Setup()
         {
-            _School = new School();
+            _School = new SchoolNamespace.School();
             _Student = new Student(0, 0, new DateTime(2008, 05, 10));
             _Student2 = new Student((Schoolclasses)1, (AllowedGenders)1, new DateTime(2007, 11, 21));
             _Student3 = new Student((Schoolclasses)1, (AllowedGenders)1, new DateTime(2008, 10, 19));
@@ -85,7 +85,7 @@ namespace SchoolUnitTests
         {
             _School.AddClassroomToSchool(_Classroom);
             _School.AddClassroomToSchool(_Classroom2);
-            Assert.That(_School.ClassroomsWithSynap()[0], Is.EqualTo(_Classroom));
+            Assert.That(_School.ClassroomsWithCynap()[0], Is.EqualTo(_Classroom));
         }
         [Test]
         public void ClassroomsWithNumberOfStudents_AddThreeStudentAndOneSchool_ReturnsDict()
@@ -98,11 +98,16 @@ namespace SchoolUnitTests
             Assert.That(_School.ClassroomsWithNumberOfStudents(), Is.EqualTo(myDict));
         }
         [Test]
-        public void PercentOfFemalStudentsInAClass()
+        public void PercentOfFemalStudentsInAClass_AddTwoFemaleStudents_ReturnsDouble100()
         {
             _School.AddStudentToSchool(_Student2);
             _School.AddStudentToSchool(_Student3);
             Assert.That(_School.PercentOfFemaleStudentsInASchoolclass((Student.Schoolclasses)1), Is.EqualTo(100.0));
+        }
+        [Test]
+        public void PercentOfFemalStudentsInAClass_AddZeroStudents_ReturnsDouble0()
+        {
+            Assert.That(_School.PercentOfFemaleStudentsInASchoolclass((Student.Schoolclasses)1), Is.EqualTo(0.0));
         }
         [Test]
         public void IsClassroomBigEnough()

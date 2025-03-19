@@ -1,10 +1,10 @@
-﻿using System.ComponentModel;
-
-namespace ProgrammUE_02
+﻿using System.Text.Json.Serialization;
+namespace SchoolNamespace
 {
     public class Person
     {
         private DateTime _Birthdate;
+        public DateTime Birthdate { get { return _Birthdate; } private set { _Birthdate = value; } }
         public int Age { get { return DateTime.Now.Year - _Birthdate.Year; } }
         public enum AllowedGenders
         {
@@ -18,7 +18,8 @@ namespace ProgrammUE_02
             get { return _Gender; } 
             set { _Gender = value; } 
         }
-
+        public Person() {}
+        [JsonConstructor]
         public Person(DateTime birthdate, AllowedGenders gender) 
         {
             _Birthdate = birthdate;
