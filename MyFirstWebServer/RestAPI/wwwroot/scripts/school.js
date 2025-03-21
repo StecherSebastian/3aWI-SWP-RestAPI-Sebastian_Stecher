@@ -27,10 +27,18 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
         await addStudentToClassroom(this);
     });
-    document.querySelectorAll(".school-dropdown").forEach(dropdown => {
+    document.querySelectorAll(".schoolValues-dropdown").forEach(dropdown => {
         dropdown.addEventListener("change", async function (event) {
             await updateSchoolValues(Number(this.value));
         });
+    });
+    document.getElementById("percentageOfFemaleStudentsInSchoolclass").addEventListener("submit", async function (event) {
+        event.preventDefault();
+        await percentageOfFemaleStudentsInSchoolclass(this);
+    });
+    document.getElementById("isClassroomBigEnough").addEventListener("submit", async function (event) {
+        event.preventDefault();
+        await isClassroomBigEnough(this);
     });
 })
 async function newSchool() {
@@ -208,22 +216,16 @@ async function updateSchoolValues(schoolID) {
     try {
         const numberOfStudents = await fetchValue(`http://localhost:5116/api/School/NumberOfStudents`, { SchoolID: schoolID });
         document.getElementById("numberOfStudents").innerText = numberOfStudents;
-
         const numberOfMaleStudents = await fetchValue(`http://localhost:5116/api/School/NumberOfMaleStudents`, { SchoolID: schoolID });
         document.getElementById("numberOfMaleStudents").innerText = numberOfMaleStudents;
-
         const numberOfFemaleStudents = await fetchValue(`http://localhost:5116/api/School/NumberOfFemaleStudents`, { SchoolID: schoolID });
         document.getElementById("numberOfFemaleStudents").innerText = numberOfFemaleStudents;
-
         const averageAgeOfStudents = await fetchValue(`http://localhost:5116/api/School/AverageAgeOfStudents`, { SchoolID: schoolID });
         document.getElementById("averageAgeOfStudents").innerText = averageAgeOfStudents;
-
         const numberOfClassrooms = await fetchValue(`http://localhost:5116/api/School/NumberOfClassrooms`, { SchoolID: schoolID });
         document.getElementById("numberOfClassrooms").innerText = numberOfClassrooms;
-
         const classroomsWithCynap = await fetchValue(`http://localhost:5116/api/School/ClassroomsWithCynap`, { SchoolID: schoolID });
         document.getElementById("classroomsWithCynap").innerText = classroomsWithCynap;
-
         const classroomsWithNumberOfStudents = await fetchValue(`http://localhost:5116/api/School/ClassroomsWithNumberOfStudents`, { SchoolID: schoolID });
         document.getElementById("classroomsWithNumberOfStudents").innerText = classroomsWithNumberOfStudents;
     } catch (error) {
@@ -237,11 +239,42 @@ async function fetchValue(url, body) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
+    };
+    try {
+        const response = await fetch(url, request);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(`Response from ${url}:`, data);
+        return JSON.stringify(data, null, 2);
+    } catch (error) {
+        console.error(`Error fetching value from ${url}: ${error.message}`);
+        throw error;
     }
-    const response = await fetch(url, request);
-    if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
+}
+async function percentageOfFemaleStudentsInSchoolclass(form) {
+    const input = new FormData(form);
+    const schoolID = Number(input.get("school"));
+    const schoolclass = Number(input.get("schoolclass"));
+    console.log(`School ID: ${schoolID}, School Class: ${schoolclass}`);
+    try {
+        const percentageOfFemalStudentsInSchoolclass = await fetchValue(`http://localhost:5116/api/School/PercentOfFemaleStudentsInASchoolclass`, { SchoolID: schoolID, Schoolclass: schoolclass });
+        document.getElementById("percentageOfFemaleStudentInSchoolclass_output").innerText = percentageOfFemalStudentsInSchoolclass;
+    } catch (error) {
+        console.error(error.message);
     }
-    const data = await response.json();
-    return JSON.stringify(data, null, 2);
+}
+async function isClassroomBigEnough(form) {
+    const input = new FormData(form);
+    const schoolID = Number(input.get("school"));
+    const classroomID = Number(input.get("classroom"));
+    const schoolclass = Number(input.get("schoolclass"));
+    console.log(`School ID: ${schoolID}, Classroom: ${classroomID}, School Class: ${schoolclass}`);
+    try {
+        const isClassroomBigEnough = await fetchValue(`http://localhost:5116/api/School/IsClassroomBigEnough`, { SchoolID: schoolID, ClassroomID: classroomID, Schoolclass: schoolclass });
+        document.getElementById("isClassroomBigEnough_output").innerText = isClassroomBigEnough;
+    } catch (error) {
+        console.error(error.message);
+    }
 }

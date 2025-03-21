@@ -31,7 +31,7 @@
                 <h3 class="mb-4">Create Student</h3>
                 <form id="student" class="mb-3">
                     <select name="schoolclass" class="form-control mb-2" required>
-                        <option value="default" disabled selected>School Class</option>
+                        <option value="default" disabled selected>Schoolclass</option>
                         <option value="0">3aWI</option>
                         <option value="1">3bWI</option>
                     </select>
@@ -67,34 +67,63 @@
                 <hr />
                 <h3 class="my-4">Values</h3>
                 <form id="schoolValues" class="mb-3">
-                    <select class="school-dropdown form-control mb-2" required></select>
+                    <select id="schoolValues-dropdown" class="schoolValues-dropdown school-dropdown form-control mb-2" required></select>
                     <div class="p-3 border border-secondary rounded bg-light text-start mb-2">
-                        <h5 class="text-center">Number of Students:</h5>
-                        <pre id="numberOfStudents">...</pre><span></span>
+                        <h6 class="text-center">Number of Students:</h6>
+                        <pre id="numberOfStudents">...</pre>
                     </div>
                     <div class="p-3 border border-secondary rounded bg-light text-start mb-2">
-                        <h5 class="text-center">Number of male Students:</h5>
-                        <pre id="numberOfMaleStudents">...</pre><span></span>
+                        <h6 class="text-center">Number of male Students:</h6>
+                        <pre id="numberOfMaleStudents">...</pre>
                     </div>
                     <div class="p-3 border border-secondary rounded bg-light text-start mb-2">
-                        <h5 class="text-center">Number of female Students:</h5>
-                        <pre id="numberOfFemaleStudents">...</pre><span></span>
+                        <h6 class="text-center">Number of female Students:</h6>
+                        <pre id="numberOfFemaleStudents">...</pre>
                     </div>
                     <div class="p-3 border border-secondary rounded bg-light text-start mb-2">
-                        <h5 class="text-center">Average Age of Students:</h5>
-                        <pre id="averageAgeOfStudents">...</pre><span></span>
+                        <h6 class="text-center">Average Age of Students:</h6>
+                        <pre id="averageAgeOfStudents">...</pre>
                     </div>
                     <div class="p-3 border border-secondary rounded bg-light text-start mb-2">
-                        <h5 class="text-center">Number of Classrooms:</h5>
-                        <pre id="numberOfClassrooms">...</pre><span></span>
+                        <h6 class="text-center">Number of Classrooms:</h6>
+                        <pre id="numberOfClassrooms">...</pre>
                     </div>
                     <div class="p-3 border border-secondary rounded bg-light text-start mb-2">
-                        <h5 class="text-center">Classrooms with Cynap:</h5>
-                        <pre id="classroomsWithCynap">...</pre><span></span>
+                        <h6 class="text-center">Classrooms with Cynap:</h6>
+                        <pre id="classroomsWithCynap">...</pre>
                     </div>
                     <div class="p-3 border border-secondary rounded bg-light text-start mb-2">
-                        <h5 class="text-center">Classrooms with Number of Students:</h5>
-                        <pre id="classroomsWithNumberOfStudents">...</pre><span></span>
+                        <h6 class="text-center">Classrooms with Number of Students:</h6>
+                        <pre id="classroomsWithNumberOfStudents">...</pre>
+                    </div>
+                </form>
+                <hr />
+                <form id="percentageOfFemaleStudentsInSchoolclass" class="mb-3">
+                    <select name="school" class="school-dropdown form-control mb-2" required></select>
+                    <select name="schoolclass" class="form-control mb-2" required>
+                        <option value="default" disabled selected>Schoolclass</option>
+                        <option value="0">3aWI</option>
+                        <option value="1">3bWI</option>
+                    </select>
+                    <button type="submit" class="btn btn-dark w-100 mb-2">Execute</button>
+                    <div class="p-3 border border-secondary rounded bg-light text-start mb-2">
+                        <h6 class="text-center">Percentage of female Students in Schoolclass:</h6>
+                        <pre id="percentageOfFemaleStudentInSchoolclass_output">...</pre>
+                    </div>
+                </form>
+                <hr />
+                <form id="isClassroomBigEnough" class="mb-3">
+                    <select name="school" class="school-dropdown form-control mb-2" required></select>
+                    <select name="classroom" class="classroom-dropdown form-control mb-2" required></select>
+                    <select name="schoolclass" class="form-control mb-2" required>
+                        <option value="default" disabled selected>Schoolclass</option>
+                        <option value="0">3aWI</option>
+                        <option value="1">3bWI</option>
+                    </select>
+                    <button type="submit" class="btn btn-dark w-100 mb-2">Execute</button>
+                    <div class="p-3 border border-secondary rounded bg-light text-start mb-2">
+                        <h6 class="text-center">Is the Classroom big enough for the Schoolclass:</h6>
+                        <pre id="isClassroomBigEnough_output">...</pre>
                     </div>
                 </form>
             </div>
