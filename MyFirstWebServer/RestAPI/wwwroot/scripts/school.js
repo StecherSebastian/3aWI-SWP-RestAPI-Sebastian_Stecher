@@ -23,6 +23,15 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
         await addClassroomToSchool(this);
     });
+    document.getElementById("addStudentToClassroom").addEventListener("submit", async function (event) {
+        event.preventDefault();
+        await addStudentToClassroom(this);
+    });
+    document.querySelectorAll(".school-dropdown").forEach(dropdown => {
+        dropdown.addEventListener("change", async function (event) {
+            await updateSchoolValues(Number(this.value));
+        });
+    });
 })
 async function newSchool() {
     const url = `http://localhost:5116/api/School/newSchool`;
@@ -122,8 +131,9 @@ async function populateDropdown(dropdownClass, url, dropdownType) {
 }
 async function addStudentToSchool(form) {
     const input = new FormData(form);
-    const schoolID = input.get("school-dropdown");
-    const studentID = input.get("student-dropdown");
+    console.log(input.get("school"), input.get("student"));
+    const schoolID = input.get("school");
+    const studentID = input.get("student");
     const url = `http://localhost:5116/api/School/addStudentToSchool`;
     const request = {
         method: 'PUT',
@@ -146,8 +156,9 @@ async function addStudentToSchool(form) {
 }
 async function addClassroomToSchool(form) {
     const input = new FormData(form);
-    const schoolID = input.get("school-dropdown");
-    const classroomID = input.get("classroom-dropdown");
+    console.log(input.get("school"), input.get("classroom"));
+    const schoolID = input.get("school");
+    const classroomID = input.get("classroom");
     const url = `http://localhost:5116/api/School/addClassroomToSchool`;
     const request = {
         method: 'PUT',
@@ -161,10 +172,76 @@ async function addClassroomToSchool(form) {
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
-        const output = response.status !== 204 ? await response.json() : { message: "No content" };
+        const output = await response.json();
         const outputLocation = "output";
         document.getElementById(outputLocation).innerText = JSON.stringify(output, null, 2);
     } catch (error) {
         console.error(error.message)
     }
+}
+async function addStudentToClassroom(form) {
+    const input = new FormData(form);
+    console.log(input.get("classroom"), input.get("student"));
+    const classroomID = input.get("classroom");
+    const studentID = input.get("student");
+    const url = `http://localhost:5116/api/School/addStudentToClassroom`;
+    const request = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ClassroomID: Number(classroomID), StudentID: Number(studentID) })
+    }
+    try {
+        const response = await fetch(url, request);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        const output = await response.json();
+        const outputLocation = "output";
+        document.getElementById(outputLocation).innerText = JSON.stringify(output, null, 2);
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+async function updateSchoolValues(schoolID) {
+    try {
+        const numberOfStudents = await fetchValue(`http://localhost:5116/api/School/NumberOfStudents`, { SchoolID: schoolID });
+        document.getElementById("numberOfStudents").innerText = numberOfStudents;
+
+        const numberOfMaleStudents = await fetchValue(`http://localhost:5116/api/School/NumberOfMaleStudents`, { SchoolID: schoolID });
+        document.getElementById("numberOfMaleStudents").innerText = numberOfMaleStudents;
+
+        const numberOfFemaleStudents = await fetchValue(`http://localhost:5116/api/School/NumberOfFemaleStudents`, { SchoolID: schoolID });
+        document.getElementById("numberOfFemaleStudents").innerText = numberOfFemaleStudents;
+
+        const averageAgeOfStudents = await fetchValue(`http://localhost:5116/api/School/AverageAgeOfStudents`, { SchoolID: schoolID });
+        document.getElementById("averageAgeOfStudents").innerText = averageAgeOfStudents;
+
+        const numberOfClassrooms = await fetchValue(`http://localhost:5116/api/School/NumberOfClassrooms`, { SchoolID: schoolID });
+        document.getElementById("numberOfClassrooms").innerText = numberOfClassrooms;
+
+        const classroomsWithCynap = await fetchValue(`http://localhost:5116/api/School/ClassroomsWithCynap`, { SchoolID: schoolID });
+        document.getElementById("classroomsWithCynap").innerText = classroomsWithCynap;
+
+        const classroomsWithNumberOfStudents = await fetchValue(`http://localhost:5116/api/School/ClassroomsWithNumberOfStudents`, { SchoolID: schoolID });
+        document.getElementById("classroomsWithNumberOfStudents").innerText = classroomsWithNumberOfStudents;
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+async function fetchValue(url, body) {
+    const request = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    }
+    const response = await fetch(url, request);
+    if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+    }
+    const data = await response.json();
+    return JSON.stringify(data, null, 2);
 }

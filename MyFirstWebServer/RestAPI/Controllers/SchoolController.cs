@@ -62,7 +62,7 @@ public class SchoolController : ControllerBase
             if (!DataStore.Schools.TryGetValue(request.SchoolID.Value, out School school)) { return NotFound(Messages.SchoolNotFound); }
             if (!DataStore.Students.TryGetValue(request.StudentID.Value, out Student student)) { return NotFound(Messages.StudentNotFound); }
             school.AddStudentToSchool(student);
-            return Ok(new {School = school, Message = "Student added successfully." });
+            return Ok(new { School = school, Message = "Student added successfully." });
         }
         catch (Exception e)
         {
@@ -94,7 +94,8 @@ public class SchoolController : ControllerBase
             if (request.ClassroomID == null) { return BadRequest(Messages.ClassroomRequired); }
             if (request.StudentID == null) { return BadRequest(Messages.StudentRequired); }
             if (!DataStore.Classrooms.TryGetValue(request.ClassroomID.Value, out Classroom classroom)) { return NotFound(Messages.ClassroomNotFound); }
-            if (!DataStore.Students.TryGetValue(request.StudentID.Value, out Student student)) { classroom.AddStudentToClassroom(student); }
+            if (!DataStore.Students.TryGetValue(request.StudentID.Value, out Student student)) { return NotFound(Messages.StudentNotFound); }
+            classroom.AddStudentToClassroom(student);
             return Ok(new { Classroom = classroom, Message = "Student added successfully." });
         }
         catch (Exception e)
@@ -109,7 +110,7 @@ public class SchoolController : ControllerBase
         {
             if (request.SchoolID == null) { return BadRequest(Messages.SchoolRequired); }
             if (!DataStore.Schools.TryGetValue(request.SchoolID.Value, out School school)) { return NotFound(Messages.SchoolNotFound); }
-            return Ok(new {School = school, Message = $"Number of Students in School: {school.NumberOfStudents()}" });
+            return Ok(new { NumberOfStudents = school.NumberOfStudents(), Message = $"Number of Students in School: {school.NumberOfStudents()}" });
         }
         catch (Exception e)
         {
@@ -123,7 +124,7 @@ public class SchoolController : ControllerBase
         {
             if (request.SchoolID == null) { return BadRequest(Messages.SchoolRequired); }
             if (!DataStore.Schools.TryGetValue(request.SchoolID.Value, out School school)) { return NotFound(Messages.SchoolNotFound); }
-            return Ok(new {School = school, Message = $"Number of male Students in School: {school.NumberOfMaleStudents()}" });
+            return Ok(new { NumberOfMaleStudents = school.NumberOfMaleStudents(), Message = $"Number of male Students in School: {school.NumberOfMaleStudents()}" });
         }
         catch (Exception e)
         {
@@ -137,7 +138,7 @@ public class SchoolController : ControllerBase
         {
             if (request.SchoolID == null) { return BadRequest(Messages.SchoolRequired); }
             if (!DataStore.Schools.TryGetValue(request.SchoolID.Value, out School school)) { return NotFound(Messages.SchoolNotFound); }
-            return Ok(new {School = school, Message = $"Number of female Students in School: {school.NumberOfFemaleStudents()}" });
+            return Ok(new { NumberOfFemaleStudents = school.NumberOfFemaleStudents(), Message = $"Number of female Students in School: {school.NumberOfFemaleStudents()}" });
         }
         catch (Exception e)
         {
@@ -151,7 +152,7 @@ public class SchoolController : ControllerBase
         {
             if (request.SchoolID == null) { return BadRequest(Messages.SchoolRequired); }
             if (!DataStore.Schools.TryGetValue(request.SchoolID.Value, out School school)) { return NotFound(Messages.SchoolNotFound); }
-            return Ok(new {School = school, Message = $"Average age of Students in School: {school.AverageAgeOfStudents()}" });
+            return Ok(new { AverageAgeOfStudents = school.AverageAgeOfStudents(), Message = $"Average age of Students in School: {school.AverageAgeOfStudents()}" });
         }
         catch (Exception e)
         {
@@ -165,27 +166,28 @@ public class SchoolController : ControllerBase
         {
             if (request.SchoolID == null) { return BadRequest(Messages.SchoolRequired); }
             if (!DataStore.Schools.TryGetValue(request.SchoolID.Value, out School school)) { return NotFound(Messages.SchoolNotFound); }
-            return Ok(new {School = school, Message = $"Number of Classrooms in School: {school.NumberOfClassrooms()}" });
+            return Ok(new { NumberOfClassrooms = school.NumberOfClassrooms(), Message = $"Number of Classrooms in School: {school.NumberOfClassrooms()}" });
         }
         catch (Exception e)
         {
             return BadRequest(e.Message);
         }
     }
-    [HttpPost("ClassroomsWithSynap")]
+    [HttpPost("ClassroomsWithCynap")]
     public IActionResult ClassroomsWithCynap([FromBody] ObjectsRequestBody request)
     {
         try
         {
             if (request.SchoolID == null) { return BadRequest(Messages.SchoolRequired); }
             if (!DataStore.Schools.TryGetValue(request.SchoolID.Value, out School school)) { return NotFound(Messages.SchoolNotFound); }
-            return Ok(new { School = school, Message = $"Classrooms with Cynap: {school.ClassroomsWithCynap()}" });
+            return Ok(new { ClassroomsWithCynap = school.ClassroomsWithCynap(), Message = $"Classrooms with Cynap: {school.ClassroomsWithCynap()}" });
         }
         catch (Exception e)
         {
             return BadRequest(e.Message);
         }
     }
+
     [HttpPost("ClassroomsWithNumberOfStudents")]
     public IActionResult ClassroomsWithNumberOfStudents([FromBody] ObjectsRequestBody request)
     {
@@ -193,13 +195,14 @@ public class SchoolController : ControllerBase
         {
             if (request.SchoolID == null) { return BadRequest(Messages.SchoolRequired); }
             if (!DataStore.Schools.TryGetValue(request.SchoolID.Value, out School school)) { return NotFound(Messages.SchoolNotFound); }
-            return Ok(new { School = school, Message = $"Classrooms with number of Students: {school.ClassroomsWithNumberOfStudents()}" });
+            return Ok(new { ClassroomsWithNumberOfStudents = school.ClassroomsWithNumberOfStudents(), Message = $"Classrooms with number of Students: {school.ClassroomsWithNumberOfStudents()}" });
         }
         catch (Exception e)
         {
             return BadRequest(e.Message);
         }
     }
+
     [HttpPost("PercentOfFemaleStudentsInASchoolclass")]
     public IActionResult PercentOfFemaleStudentsInASchoolclass([FromBody] ObjectsRequestBody request)
     {
@@ -208,7 +211,7 @@ public class SchoolController : ControllerBase
             if (request.SchoolID == null) { return BadRequest(Messages.SchoolRequired); }
             if (request.Schoolclass == null) { return BadRequest(Messages.SchoolclassRequired); }
             if (!DataStore.Schools.TryGetValue(request.SchoolID.Value, out School school)) { return NotFound(Messages.SchoolNotFound); }
-            return Ok(new { School = school, Schoolclass = request.Schoolclass, Message = $"Percentage of female Students in a Schoolclass: {school.PercentOfFemaleStudentsInASchoolclass(request.Schoolclass.Value)}" });
+            return Ok(new { School = school, Schoolclass = request.Schoolclass, Value = school.PercentOfFemaleStudentsInASchoolclass(request.Schoolclass.Value) });
         }
         catch (Exception e)
         {
@@ -225,7 +228,7 @@ public class SchoolController : ControllerBase
             if (request.Schoolclass == null) { return BadRequest(Messages.SchoolclassRequired); }
             if (!DataStore.Schools.TryGetValue(request.SchoolID.Value, out School school)) { return NotFound(Messages.SchoolNotFound); }
             if (!DataStore.Classrooms.TryGetValue(request.ClassroomID.Value, out Classroom classroom)) { return NotFound(Messages.ClassroomNotFound); }
-            return Ok(new { School = school, Classroom = classroom, Schoolclass = request.Schoolclass, Message = $"Is the Classroom big enough for the Schoolclass: {school.IsClassroomBigEnough(request.Schoolclass.Value, classroom)}" });
+            return Ok(new { School = school, Classroom = classroom, Schoolclass = request.Schoolclass, Value = school.IsClassroomBigEnough(request.Schoolclass.Value, classroom) });
         }
         catch (Exception e)
         {

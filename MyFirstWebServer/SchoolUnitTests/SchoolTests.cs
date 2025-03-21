@@ -90,7 +90,7 @@ namespace SchoolUnitTests
         [Test]
         public void ClassroomsWithNumberOfStudents_AddThreeStudentAndOneSchool_ReturnsDict()
         {
-            Dictionary<Classroom, int> myDict = new Dictionary<Classroom, int> { { _Classroom, 3 } };
+            Dictionary<string, int> myDict = new Dictionary<string, int> { { _Classroom.ToString(), 3 } };
             _Classroom.AddStudentToClassroom(_Student);
             _Classroom.AddStudentToClassroom(_Student2);
             _Classroom.AddStudentToClassroom(_Student3);
