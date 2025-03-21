@@ -1,12 +1,12 @@
-using SchoolNamespace;
-using static SchoolNamespace.Person;
-using static SchoolNamespace.Student;
+using Model.school;
+using static Model.school.Person;
+using static Model.school.Student;
 
 namespace SchoolUnitTests
 {
     public class Tests
     {
-        private SchoolNamespace.School _School;
+        private School _School;
         private Student _Student;
         private Student _Student2;
         private Student _Student3;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SchoolNamespace;
-using static SchoolNamespace.Person;
-using static SchoolNamespace.Student;
+using Model.school;
+using static Model.school.Person;
+using static Model.school.Student;
 
 [ApiController]
 [Route("api/[controller]")]

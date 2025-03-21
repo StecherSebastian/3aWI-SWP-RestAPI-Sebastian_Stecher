@@ -1,5 +1,5 @@
-﻿using static SchoolNamespace.Person;
-namespace SchoolNamespace
+﻿using static Model.school.Person;
+namespace Model.school
 {
     public class School
     {

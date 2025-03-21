@@ -1,4 +1,4 @@
-﻿namespace SchoolNamespace
+﻿namespace Model.school
 {
     public class Room
     {

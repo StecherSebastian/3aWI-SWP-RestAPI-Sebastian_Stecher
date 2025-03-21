@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-namespace SchoolNamespace
+namespace Model.school
 {
     public class Person
     {
