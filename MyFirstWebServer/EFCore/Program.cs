@@ -5,14 +5,13 @@ namespace ConsoleAppWithEFCore
     {
         static void Main(string[] args)
         {
-            using (var context = new AppDbContext())
+            using (AppDbContext context = new AppDbContext())
             {
                 while (true)
                 {
-                    int id = 0;
-                    string userInputString = "";
-                    string firstName = "";
-                    string lastName = "";
+                    string? userInputString = "";
+                    string? firstName = "";
+                    string? lastName = "";
                     DateTime birthdate = DateTime.Now;
                     AllowedGenders gender = AllowedGenders.m;
                     Console.WriteLine("Do you want to add a new Person (1), edit an entry (2), delete an entry (3), see the entries (4) or exit (5)");
@@ -21,9 +20,9 @@ namespace ConsoleAppWithEFCore
                     {
                         case "1":
                             Console.WriteLine("Enter the first name of the person:");
-                            firstName = Console.ReadLine();
+                            firstName = GetValidString();
                             Console.WriteLine("Enter the last name of the person:");
-                            lastName = Console.ReadLine();
+                            lastName = GetValidString();
                             Console.WriteLine("Enter the birthdate of the person:");
                             birthdate = GetDate();
                             Console.WriteLine("Enter the gender of the person (m = 0, w = 1, d = 2) :");
@@ -40,22 +39,21 @@ namespace ConsoleAppWithEFCore
                         case "2":
                             PrintAllEntries(context);
                             Console.WriteLine("Enter the ID of the person you want to edit:");
-                            id = GetExistingID(context);
-                            var personToEdit = context.Persons.FirstOrDefault(s => s.ID == id);
+                            Person? personToEdit = GetValidPerson(context);
                             Console.WriteLine("Which value do you want to change: Firstname (1), Lastname (2), Birthdate (3), Gender(4) OR (5) to go back:");
                             userInputString = Console.ReadLine();
                             switch (userInputString)
                             {
                                 case "1":
                                     Console.WriteLine("Enter the new first name:");
-                                    firstName = Console.ReadLine();
+                                    firstName = GetValidString();
                                     personToEdit.FirstName = firstName;
                                     context.SaveChanges();
                                     PrintAllEntries(context);
                                     break;
                                 case "2":
                                     Console.WriteLine("Enter the new last name:");
-                                    lastName = Console.ReadLine();
+                                    lastName = GetValidString();
                                     personToEdit.LastName = lastName;
                                     context.SaveChanges();
                                     PrintAllEntries(context);
@@ -89,8 +87,7 @@ namespace ConsoleAppWithEFCore
                         case "3":
                             PrintAllEntries(context);
                             Console.WriteLine("Enter the ID of the person you want to delete:");
-                            id = GetExistingID(context);
-                            var personToDelete = context.Persons.FirstOrDefault(s => s.ID == id);
+                            Person? personToDelete = GetValidPerson(context);
                             context.Persons.Remove(personToDelete);
                             context.SaveChanges();
                             PrintAllEntries(context);
@@ -119,7 +116,7 @@ namespace ConsoleAppWithEFCore
         }
         static DateTime GetDate()
         {
-            string input = Console.ReadLine();
+            string? input = Console.ReadLine();
             DateTime date = DateTime.Now;
             while (!DateTime.TryParse(input, out date))
             {
@@ -130,7 +127,7 @@ namespace ConsoleAppWithEFCore
         }
         static AllowedGenders GetGender()
         {
-            string input = Console.ReadLine();
+            string? input = Console.ReadLine();
             AllowedGenders gender = AllowedGenders.m;
             while (!AllowedGenders.TryParse(input, out gender))
             {
@@ -139,14 +136,28 @@ namespace ConsoleAppWithEFCore
             }
             return gender;
         }
-        static int GetExistingID(AppDbContext context)
+        static string GetValidString()
+        {
+            string? input = Console.ReadLine();
+            while (string.IsNullOrWhiteSpace(input))
+            {
+                Console.Write("\n### Invalid Input: Please Try Again ###\n*:");
+                input = Console.ReadLine();
+            }
+            return input;
+        }
+        static Person GetValidPerson(AppDbContext context)
         {
             while (true)
             {
-                string input = Console.ReadLine();
+                string? input = Console.ReadLine();
                 if (int.TryParse(input, out int id) && context.Persons.Any(s => s.ID == id))
                 {
-                    return id;
+                    var person = context.Persons.FirstOrDefault(s => s.ID == id);
+                    if (person != null)
+                    {
+                        return person;
+                    }
                 }
                 else
                 {
