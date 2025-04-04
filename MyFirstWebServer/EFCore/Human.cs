@@ -1,4 +1,4 @@
-﻿namespace ConsoleAppWithEFCore
+﻿namespace EFCore
 {
     public class Human
     {
