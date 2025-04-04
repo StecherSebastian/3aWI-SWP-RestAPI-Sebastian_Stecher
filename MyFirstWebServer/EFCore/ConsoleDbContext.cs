@@ -1,13 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ConsoleAppWithEFCore
+namespace EFCore
 {
-    public class AppDbContext : DbContext
+    public class ConsoleDbContext : DbContext
     {
         public DbSet<Person> Persons { get; set; }
+        public DbSet<City> Cities { get; set; } 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=EFCoreExampleDB.db");
+            string dbPath = Path.Combine(Directory.GetCurrentDirectory(), "EFCoreExampleDB.db");
+            optionsBuilder.UseSqlite($"Data Source={dbPath}");
         }
     }
 }

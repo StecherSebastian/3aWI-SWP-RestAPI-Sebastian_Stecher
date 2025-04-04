@@ -15,7 +15,7 @@ namespace SchoolUnitTests
         [SetUp]
         public void Setup()
         {
-            _School = new SchoolNamespace.School();
+            _School = new School();
             _Student = new Student(0, 0, new DateTime(2008, 05, 10));
             _Student2 = new Student((Schoolclasses)1, (AllowedGenders)1, new DateTime(2007, 11, 21));
             _Student3 = new Student((Schoolclasses)1, (AllowedGenders)1, new DateTime(2008, 10, 19));
@@ -102,17 +102,17 @@ namespace SchoolUnitTests
         {
             _School.AddStudentToSchool(_Student2);
             _School.AddStudentToSchool(_Student3);
-            Assert.That(_School.PercentOfFemaleStudentsInASchoolclass((Student.Schoolclasses)1), Is.EqualTo(100.0));
+            Assert.That(_School.PercentOfFemaleStudentsInASchoolclass((Schoolclasses)1), Is.EqualTo(100.0));
         }
         [Test]
         public void PercentOfFemalStudentsInAClass_AddZeroStudents_ReturnsDouble0()
         {
-            Assert.That(_School.PercentOfFemaleStudentsInASchoolclass((Student.Schoolclasses)1), Is.EqualTo(0.0));
+            Assert.That(_School.PercentOfFemaleStudentsInASchoolclass((Schoolclasses)1), Is.EqualTo(0.0));
         }
         [Test]
         public void IsClassroomBigEnough()
         {
-            Assert.That(_School.IsClassroomBigEnough((Student.Schoolclasses)1, _Classroom), Is.True);
+            Assert.That(_School.IsClassroomBigEnough((Schoolclasses)1, _Classroom), Is.True);
         }
     }
 }
